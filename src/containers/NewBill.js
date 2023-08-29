@@ -17,14 +17,24 @@ export default class NewBill {
   }
   handleChangeFile = e => {
     e.preventDefault()
+    // Récupère l'input file
+    const fileInput = this.document.querySelector(`input[data-testid="file"]`);
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
+    // Récupère seulement l'extension du fichier
+    const fileExtension = fileName.split('.').pop();
+    // Défini l'extension autorisés
+    const fileTypes = ["jpg", "jpeg", "png"];
     const formData = new FormData()
     const email = JSON.parse(localStorage.getItem("user")).email
     formData.append('file', file)
     formData.append('email', email)
-
+    if (!fileTypes.includes(fileExtension)) {
+      // Affiche une alerte avec un message d'erreur et on vide l'input
+      alert("Veuillez sélectionner un fichier png, jpg ou jpeg.");
+      fileInput.value = "";
+    }
     this.store
       .bills()
       .create({
