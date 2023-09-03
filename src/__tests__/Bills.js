@@ -41,7 +41,13 @@ describe("Given I am connected as an employee", () => {
       expect(dates).toEqual(datesSorted)
     })
   })
-
+  // Test loading screen
+  describe('When I am on Bills page but it is loading', () => {
+    test('Then, Loading page should be rendered', () => {
+      document.body.innerHTML = BillsUI({ loading: true })
+      expect(screen.getAllByText('Loading...')).toBeTruthy()
+    })
+  })
   // Test bouton nouvelle note de frais
   describe('When I click on the button to create a new bill', () => {
     test('Then, it should open the NewBill page', () => {
@@ -49,7 +55,7 @@ describe("Given I am connected as an employee", () => {
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname })
       }
-      //affiche les données de la page
+      // Affiche les données de la page
       Object.defineProperty(window, 'localStorage', { value: localStorageMock })
       window.localStorage.setItem('user', JSON.stringify({
         type: 'employee'
